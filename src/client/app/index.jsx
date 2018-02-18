@@ -1,14 +1,15 @@
 import React from 'react';
 import {render} from 'react-dom';
 import AwesomeComponent from './components/AwesomeComponent.jsx';
+import Search from './components/Search.jsx'
 
 class App extends React.Component {
   render () {
     return (
       <div>
-        <p> Hello React project</p>
-        <AwesomeComponent />
-        <AwesomeComponent />
+        <h1> League App </h1>
+        <h3>Search For Username</h3>
+        <Search />
       </div>
     );
   }

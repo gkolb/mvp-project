@@ -165,7 +165,7 @@ let save = (matches, user) => {
     })
     currentMatch.save(function(err, data) {
       if (err) {
-        console.log('error saving')
+        // console.log('error saving')
       } else {
         console.log('saved')
       }
