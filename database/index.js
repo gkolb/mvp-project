@@ -155,6 +155,7 @@ let matchSchema = mongoose.Schema({
 let Match = mongoose.model('Match', matchSchema);
 
 let save = (matches, user) => {
+  console.log(user)
   _.each(matches, (match) => {
     var currentMatch = new Match({
       matchId: match.gameId,
@@ -169,11 +170,39 @@ let save = (matches, user) => {
       } else {
         console.log('saved')
       }
-
     })
   });
 }
 
-module.exports.save = save;
+// let saveOne = (match, user) => {
+//   return new Promise(function(resolve, reject) {
+//     var currentMatch = new Match({
+//       matchId: match.gameId,
+//       summoner: user,
+//       championId: match.champion,
+//       champion: champions[match.champion],
+//       lane: match.lane
+//     })
+//     currentMatch.save(function(err, data) {
+//       if (err) {
+//         resolve(err);
+//       } else {
+//         resolve(data);
+//       }
+//     })
+//   })
+// }
 
-console.log(champions[77]);
+let find = (username, callback) => {
+  Match.find({ 'summoner': username }, function(err, result) {
+    if(err) {
+      throw err;
+    } else {
+      callback(result)
+    }
+  })
+}
+
+
+module.exports.save = save;
+module.exports.find = find;
