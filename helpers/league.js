@@ -1,7 +1,31 @@
 const request = require('request');
+var throttledRequest = require('throttled-request')(request);
 const config = require('../config.js');
 const db = require('../database/index.js');
 var Promise = require("bluebird");
+const _ = require('underscore');
+
+
+throttledRequest.configure({
+  requests: 1,
+  milliseconds: 1201
+});
+
+var getAllMatches = function(index, userId){
+  throttledRequest(`https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/39348750?beginIndex=${index}&api_key=${config.API_KEY}`, function(err, res, body) {
+    var matches = JSON.parse(body).matches;
+    if(matches.length > 0){
+      console.log(matches.length)
+      getAllMatches(index + 100, userId)
+      db.save(matches, userId)
+    }
+    })
+    // .on('response', function (a, b, c) {
+    //   console.log('a', typeof a.body, 'b ', typeof b, 'c ', typeof c);
+    // });
+};
+
+// getAllMatches(0, 'Lord Gregory');
 
 
 
@@ -44,16 +68,53 @@ var getRecentMatches = function(arr) {
   })
 }
 
+
+
 var getMatchesFromUsername = function(user) {
   return new Promise(function(resolve, reject) {
-  getAccountId(user)
-    .then(getRecentMatches)
-    .then(console.log)
-    .then(resolve)
-    .catch(reject);
+    getAccountId(user)
+      .then(getRecentMatches)
+      .then(console.log)
+      .then(resolve)
+      .catch(reject);
   })
 
 }
+
+let getPlayedChampCount = function(user, callback) {
+  db.findAllMatches(function(results) {
+    var champObj = {};
+    var champs = _.each(db.champions, (champ, id) => {
+      champObj[id] = {
+        champ: champ,
+        count: 0
+      };
+    })
+    _.each(results, (match) => {
+      champObj[match.championId].count++;
+    })
+    callback(champObj)
+    // console.log('matches', results)
+  });
+}
+
+let getTop5Champs = function(user, callback) {
+  getPlayedChampCount(user, function(champs) {
+  var champArr = [];
+  _.each(champs, function(champ) {
+    champArr.push(champ);
+  });
+  var sortedChampArr = _.sortBy(champArr, function(champ) {
+    return champ.count * -1;
+  });
+  callback([sortedChampArr[0], sortedChampArr[1], sortedChampArr[2], sortedChampArr[3], sortedChampArr[4]])
+  });
+
+}
+
+
+
+
 
 // console.log(getRecentMatches('39348750'));
 // console.log(getAccountId('Lord Gregory')
@@ -64,4 +125,7 @@ var getMatchesFromUsername = function(user) {
 
 
 module.exports.getMatches = getMatchesFromUsername;
+module.exports.getTop5Champs = getTop5Champs
+
+//accountId: 39348750
 

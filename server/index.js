@@ -10,17 +10,23 @@ app.use(express.static(__dirname + '/../src/client'));
 
 app.post('/matches', (req, res) => {
   var user = req.body.data;
-  console.log('POST', user);
   league.getMatches(user)
     .then(function(data) {
       // var context = res;
       setTimeout(function() {
-        console.log('find', user)
         db.find(user, (data) => {
           res.send(data);
         })
       }, 500)
     })
+})
+
+app.post('/champions', (req, res) => {
+  var user = req.body.data;
+  console.log('post champs, ', user);
+  league.getTop5Champs(user, (data) =>{
+    res.send(data)
+  })
 })
 
 // app.get('/matches', (req, res) => {

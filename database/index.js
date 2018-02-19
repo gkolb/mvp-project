@@ -168,7 +168,7 @@ let save = (matches, user) => {
     })
     currentMatch.save(function(err, data) {
       if (err) {
-        // console.log('error saving')
+        console.log('error saving')
       } else {
         console.log('saved')
       }
@@ -198,6 +198,18 @@ let save = (matches, user) => {
 let find = (username, callback) => {
   Match.find({ 'summoner': username }, function(err, result) {
     if(err) {
+      console.log(error);
+      return;
+    } else {
+      callback(result)
+    }
+  })
+  .limit(20)
+}
+
+let findAllMatches = (callback) => {
+  Match.find({ 'summoner': 'Lord Gregory' }, function(err, result) {
+    if(err) {
       throw err;
     } else {
       callback(result)
@@ -208,3 +220,5 @@ let find = (username, callback) => {
 
 module.exports.save = save;
 module.exports.find = find;
+module.exports.findAllMatches = findAllMatches;
+module.exports.champions = champions;
