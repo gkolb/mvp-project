@@ -107,9 +107,9 @@ let getTop5Champs = function(user, callback) {
   var sortedChampArr = _.sortBy(champArr, function(champ) {
     return champ.count * -1;
   });
+  // console.log(sortedChampArr);
   callback([sortedChampArr[0], sortedChampArr[1], sortedChampArr[2], sortedChampArr[3], sortedChampArr[4]])
   });
-
 }
 
 
