@@ -3,7 +3,7 @@ import Match from './Match.jsx';
 
 const MatchList = (props) => (
   <div>
-    <h1>Most Popular Repos</h1>
+    <h1>Recent Matches</h1>
     <table>
       <tbody>
       <tr>
