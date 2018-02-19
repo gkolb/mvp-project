@@ -46,7 +46,7 @@ var getRecentMatches = function(arr) {
 
 var getMatchesFromUsername = function(user) {
   return new Promise(function(resolve, reject) {
-  getAccountId('Lord Gregory')
+  getAccountId(user)
     .then(getRecentMatches)
     .then(console.log)
     .then(resolve)

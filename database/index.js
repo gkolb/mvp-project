@@ -149,6 +149,7 @@ let matchSchema = mongoose.Schema({
   summoner: String,
   championId: Number,
   champion: String,
+  time: Number,
   lane: String
 })
 
@@ -162,6 +163,7 @@ let save = (matches, user) => {
       summoner: user,
       championId: match.champion,
       champion: champions[match.champion],
+      time: match.timestamp,
       lane: match.lane
     })
     currentMatch.save(function(err, data) {
