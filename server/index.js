@@ -6,7 +6,7 @@ const db = require('../database/index.js');
 const url = require('url')
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(__dirname + '/../src/client'));
+app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/matches', (req, res) => {
   var user = req.body.data;

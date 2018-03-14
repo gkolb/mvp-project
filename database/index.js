@@ -142,7 +142,8 @@ let champions = {
   '432': 'Bard',
   '497': 'Rakan',
   '498': 'Xayah',
-  '516': 'Ornn' }
+  '516': 'Ornn',
+  '145': 'Kaisa' }
 
 let matchSchema = mongoose.Schema({
   matchId: { type: Number, unique: true },
